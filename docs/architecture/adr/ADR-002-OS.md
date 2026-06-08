@@ -8,12 +8,11 @@ Accepted
 
 The system is a single-node, VPS-hosted deployment for a RESTful SPA application with supporting backend services. The operating system must support:
 
-- lightweight deployment footprint
+- lightweight deployment and runtime footprint
 - stable package management and system updates
 - compatibility with standard web service tooling (e.g., reverse proxy, runtime environments)
 - low operational overhead for a solo-maintained system
 - open-source and cost-free licensing
-
 
 ## Decision
 
@@ -29,8 +28,7 @@ Void Linux was selected based on the following system-level properties:
 - independent distribution with a straightforward packaging system
 - rolling release model with frequent upstream updates
 - optional musl or glibc support depending on runtime requirements
-- support for lightweight init system (runit)
-
+- native support for lightweight init system (runit)
 
 ## Alternatives Considered
 
@@ -59,7 +57,7 @@ Positive
 - predictable package management model
 - rolling release provides timely updates
 - minimal default system services
-- flexible init system configuration (runit)
+- lightweight init system (runit)
 
 Negative
 - rolling release model introduces update management responsibility
@@ -76,7 +74,7 @@ Mitigations
 
 Implementation Notes
 - Void Linux installed directly onto VPS instance
-- Deployment performed on Hetzner-provisioned virtual machine (see [ADR-001](/ADR-001-VPS)
+- Deployment performed on Hetzner-provisioned virtual machine (see [ADR-001](../ADR-001-VPS)
 - No additional OS-level customization beyond baseline package installation at this stage
 
 ## References

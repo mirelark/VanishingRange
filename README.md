@@ -17,7 +17,7 @@ nginx (static frontend) > FastAPI (REST API) > PostGIS (site data schema) < Post
 ```
 The source schema holds raw ingested data with full provenance tracking. The site schema holds precomputed geoJSON polygons and enriched species content served directly to the frontend. 
 
-Full architecture documentation including decisioning and supporting analysis is available in the [architecture docs](docs/Architecture).
+Full architecture documentation including decisioning and supporting analysis is available in the [architecture docs](/docs/architecture/).
 
 ## Data Sources
 *These are intended data sources at the time of writing, and not set as official endpoints for data at this point in time.*
@@ -34,13 +34,13 @@ All source data is attributed and provenance-tracked within the database, and di
 Source data completeness has not yet been analyzed. In the scenario there is missing historical data, ranges are interpolated, supplemented by sighting data and species distribution modeling, to provide a more natural distribution. Ranges computed with these methods are displayed differently from official data sets to clarify where the information is approximate.
 
 ## Project Status
-VanishingRange is currently in active development. See the [project roadmap](docs/planning/roadmap.md) and [project board](https://github.com/users/mirelark/projects/1) for current progress and upcoming milestones.
+VanishingRange is currently in active development. See the [project roadmap](/docs/planning/roadmap.md) and [project board](https://github.com/users/mirelark/projects/1) for current progress and upcoming milestones.
 
 ## Data and Privacy Policy
 VanishingRange collects no user data, uses no cookies, requires no accounts, and uses no tracking of any kind. 
 
 ## License
-MIT License, see [LICENSE](docs/license.txt) for details
+MIT License, see [LICENSE](/docs/license.txt) for details
 
 ## Citation guide
 Citations for this site and source data from IUCN and GBIF are available in the footer of each page, available in both APA and MLA format for historical range data.

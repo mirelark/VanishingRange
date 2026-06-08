@@ -29,24 +29,25 @@
 
 7. Client Interaction Model\
     7.1 Request Lifecycle\
-    7.2 UI Update Flow
+    7.2 UI Update Flow\
+    7.3 Error Stat Presentation
 
-8. Quality Attribute Realization\
+9. Quality Attribute Realization\
     8.1 Performance\
     8.2 Integrity\
     8.3 Transparency\
     8.4 Maintainability
 
-9. Published Data Contract\
+10. Published Data Contract\
     9.1 Subject Data\
     9.2 GeoJSON Data\
     9.3 Related Subjects\
     9.4 Generated Facts\
     9.5 Provenance Metadata
 
-10. Generated Content Presentation\
+11. Generated Content Presentation\
     10.1 Display Rules\
     10.2 Provenance Requirements\
     10.3 AI Content Disclaimer
 
-11. Related ADRs
+12. Related ADRs

@@ -63,37 +63,29 @@ VanishingRange/
 |           ├─ requirements.txt
 |           └─ fun_facts.py
 └─ docs/ 
-    ├─ adr/
-    |   ├─ ADR-000-template.md
-    |   ├─ ...
-    |   └─ analysis/
-    |       ├─ ADR-000-A-template.md
-    |       └─ ...
     ├─ architecture/ 
     |   ├─ images/ 
-    |   |   └─ .gitkeep
     |   ├─ data-architecture.md
     |   ├─ software-architecture.md
     |   └─ system-architecture.md
+    |   ├─ adr
+    |       ├─ ADR-000-template.md
+    |       ├─ ...
+    |       └─ analysis/
+    |           ├─ ADR-000-A-template.md
+    |           └─ ...
     ├─ engineering/
     |   ├─ diagrams/ 
-    |   |   └─ .gitkeep
     |   ├─ notes/ 
-    |   |   └─ .gitkeep
     |   ├─ pseudocode/ 
-    |   |   └─ .gitkeep
     |   └─ research/ 
-    |       └─ .gitkeep
     ├─ planning/
     |   ├─ images/ 
-    |   |   └─ .gitkeep
     |   ├─ roadmap.md
     |   └─ scope.md
     └─ ux/
         ├─ diagrams/ 
-        |   └─ .gitkeep
         └─ wireframes/ 
-            └─ frontend-rough.png
 ```
 ---
 

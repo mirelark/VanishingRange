@@ -20,9 +20,9 @@ This document is intended for:
 
 ### 1.4 References
 
-- [ADR-001: VPS Hosting Provider Selection](../decisions/ADR-001-VPS.md)
-- [ADR-002: Operating System Selection](../decisions/ADR-002-OS.md)
-- [ADR-003: Containerization and Deployment Orchestration Strategy](../decisions/ADR-003-Containerization.md)
+- [ADR-001: VPS Hosting Provider Selection](/adr/ADR-001-VPS.md)
+- [ADR-002: Operating System Selection](/adr/ADR-002-OS.md)
+- [ADR-003: Containerization and Deployment Orchestration Strategy](/adr/ADR-003-Containerization.md)
 - [data-architecture.md](data-architecture.md)
 - [software-architecture.md](software-architecture.md)
 

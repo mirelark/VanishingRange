@@ -24,39 +24,40 @@
     5.1 Hosting Environment\
     5.2 Network Boundaries\
     5.3 Infrastructure Topology\
-    5.4 Technology Stack
+    5.4 Technology Stack\
+    5.5 Automatic Updates
 
-6. Operational Model\
+7. Operational Model\
     6.1 Processing Schedule\
     6.2 Operational Constraints\
     6.3 Monitoring and Logging\
     6.4 Backup and Recovery
 
-7. Security Architecture\
+8. Security Architecture\
     7.1 Trust Boundaries\
     7.2 Data Access Model\
     7.3 Security Assumptions\
     7.4 Privacy and Data Handling
 
-8. Quality Attributes\
+9. Quality Attributes\
     8.1 Availability\
     8.2 Integrity\
     8.3 Transparency\
     8.4 Maintainability\
     8.5 Performance
 
-9. Dependencies\
+10. Dependencies\
     9.1 External Data Providers\
     9.2 Third-Party Services\
     9.3 Models and Processing Dependencies
 
-10. Data Publication Philosophy\
+11. Data Publication Philosophy\
     10.1 Authoritative Sources\
     10.2 Derived Content\
     10.3 AI-Generated Content\
     10.4 Provenance Requirements
 
-11. Risks and Assumptions\
+12. Risks and Assumptions\
     11.1 Risks\
     11.2 Assumptions\
     11.3 Known Limitations

@@ -4,7 +4,7 @@
 
 ### 1.1 Purpose
 
-This document describes the data architecture of VanishingRange — the structure, flow, classification, and governance of data from external authoritative sources through internal processing pipelines to public-facing presentation. It is intended to support development, maintenance, and transparency review of the system's data handling practices.
+This document describes the data architecture of VanishingRange: the structure, flow, classification, and governance of data from external authoritative sources through internal processing pipelines to public-facing presentation. It is intended to support development, maintenance, and transparency review of the system's data handling practices.
 
 ### 1.2 Scope
 
@@ -294,13 +294,13 @@ Users are shown the IUCN source attribution and a direct link to the originating
 
 ### 11.2 Derived Data
 
-Derived data — including interpolated range polygons, normalized taxonomy, and related species associations — is clearly distinguished from authoritative source data. Where interpolation has been applied to fill gaps in historical range data, users are shown a label indicating that the polygon is an estimate rather than a directly sourced record, along with the methodology used to produce it.
+Derived data (including interpolated range polygons, normalized taxonomy, and related species associations) is clearly distinguished from authoritative source data. Where interpolation has been applied to fill gaps in historical range data, users are shown a label indicating that the polygon is an estimate rather than a directly sourced record, along with the methodology used to produce it.
 
 The goal of derivation is to produce the most accurate and useful visualization possible from available data, not to fabricate precision that does not exist in source records.
 
 ### 11.3 Generated Data
 
-AI-generated content — fun facts and plain language summaries — is explicitly labeled in the user interface. Users are shown:
+AI-generated content (fun facts and plain language summaries) is explicitly labeled in the user interface. Users are shown:
 
 - A clear indicator that the content was produced by an AI model
 - The source text from which the content was derived, with attribution to the originating source system
@@ -310,7 +310,7 @@ The intended audience for generated content is K12 students. Audience suitabilit
 
 ### 11.4 User Visibility
 
-The trust and transparency model is designed to be visible without being intrusive. Labels and attributions are present in context rather than requiring users to navigate to documentation. The goal is to build appropriate trust in the data — not to overwhelm students with caveats, but to ensure teachers and administrators can evaluate the platform's data quality practices without needing to request documentation separately.
+The trust and transparency model is designed to be visible without being intrusive. Labels and attributions are present in context rather than requiring users to navigate to documentation. The goal is to build appropriate trust in the data, not to overwhelm students with caveats, but to ensure teachers and administrators can evaluate the platform's data quality practices without needing to request documentation separately.
 
 ### 11.5 Verification Mechanisms
 
@@ -354,7 +354,7 @@ Users can verify the source of any displayed data by:
 
 Precise species occurrence locations from the most recent 90 days are excluded from the frontend. This policy exists to reduce the risk that real-time location data could be used to facilitate poaching or trafficking of threatened and endangered species.
 
-The 90-day window was selected as a balance between data freshness and protection. Historical range data predating the exclusion window is displayed in full. The exclusion is applied at the data publication stage — excluded records are present in the source schema for pipeline processing purposes but are not surfaced in the site schema or served via the API.
+The 90-day window was selected as a balance between data freshness and protection. Historical range data predating the exclusion window is displayed in full. The exclusion is applied at the data retrieval stage: excluded records are not retrieved from the source data sets to prevent mishandling or access.
 
 ### 14.2 Sensitive Data Handling
 
@@ -364,7 +364,7 @@ The only sensitive data category present in the system is recent species occurre
 
 ### 14.3 Retention Policy
 
-Source data is retained in the source schema for pipeline processing purposes. There is no defined retention limit for source data — records are updated incrementally and superseded records are replaced rather than archived. The source schema does not store historical pipeline run artifacts beyond what is needed for lineage tracking.
+Source data is retained in the source schema for pipeline processing purposes. There is no defined retention limit for source data; records are updated incrementally and superseded records are replaced rather than archived. The source schema does not store historical pipeline run artifacts beyond what is needed for lineage tracking.
 
 No user data is retained because no user data is collected.
 

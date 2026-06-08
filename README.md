@@ -20,6 +20,8 @@ The source schema holds raw ingested data with full provenance tracking. The sit
 Full architecture documentation including decisioning and supporting analysis is available in the [architecture docs](docs/Architecture).
 
 ## Data Sources
+*These are intended data sources at the time of writing, and not set as official endpoints for data at this point in time.*
+
 + **IUCN Red List** as the authoritative species range polygons and conservation status
 + **GBIF** for georeferenced species observation records
 + **Encyclopedia of Life** and **Catalogue of Life** for supplementary taxonomy and species descriptions
@@ -27,7 +29,9 @@ Full architecture documentation including decisioning and supporting analysis is
 
 All source data is attributed and provenance-tracked within the database, and displayed on the front-end where relevant. Precise species sighting locations are witheld from the front-end for the most recent 90 days to reduce poaching and trafficking risk. Historical range data is displayed in full.
 
-In the scenario there is missing historical data, ranges are interpolated, supplemented by sighting data and species distribution modeling, to provide a more natural distribution.
+## Known Limitations
+
+Source data completeness has not yet been analyzed. In the scenario there is missing historical data, ranges are interpolated, supplemented by sighting data and species distribution modeling, to provide a more natural distribution. Ranges computed with these methods are displayed differently from official data sets to clarify where the information is approximate.
 
 ## Project Status
 VanishingRange is currently in active development. See the [project roadmap](docs/planning/roadmap.md) and [project board](https://github.com/users/mirelark/projects/1) for current progress and upcoming milestones.

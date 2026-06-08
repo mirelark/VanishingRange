@@ -68,7 +68,7 @@ Risks
 - network latency variability depending on user geography
 
 Mitigations
-- periodic VM snapshotting for recovery scenarios
+- future consideration of periodic VM snapshotting for recovery scenarios
 - future consideration of CDN integration for static assets
 - optional multi-region expansion if usage or reliability requirements increase
 

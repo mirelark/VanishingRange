@@ -235,11 +235,10 @@ Species detail responses include the following fields:
 | Field | Type | Source | Description |
 |-------|------|--------|-------------|
 | species_id | string | Internal | Unique species identifier |
-| scientific_name | string | IUCN / CoL | Binomial nomenclature |
-| common_names | array | IUCN / EoL | List of common names with language tags |
-| iucn_status | string | IUCN | Current Red List status category |
-| iucn_status_year | integer | IUCN | Year of most recent IUCN assessment |
-| taxonomy | object | IUCN / CoL | Kingdom, phylum, class, order, family, genus |
+| scientific_name | string |  CoL | Binomial nomenclature |
+| common_names | array |  EoL | List of common names with language tags |
+| iucn_status | string | GBIF | Current Red List status category |
+| taxonomy | object | CoL | Kingdom, phylum, class, order, family, genus |
 | description | string | EoL | Species description text |
 | available_years | array | Internal | Years for which polygon data exists |
 | data_type | string | Internal | authoritative / derived / interpolated |
@@ -252,9 +251,9 @@ Polygon series responses include an ordered array of annual polygon objects:
 |-------|------|-------------|
 | year | integer | Year the polygon represents |
 | geojson | object | GeoJSON Feature object with polygon geometry |
-| data_type | string | authoritative / interpolated |
-| source | string | Source system for this year's polygon |
-| observation_count | integer | Number of observations contributing to this polygon (null for IUCN-sourced polygons) |
+| data_type | string | generated / interpolated / missing |
+| source | string array | Source systems for this year's polygon |
+| observation_count | integer | Number of observations contributing to this polygon |
 
 ### 9.3 Related Subjects
 
@@ -274,7 +273,7 @@ Fun fact fields in species detail responses include:
 
 | Field | Type | Description |
 |-------|------|-------------|
-| fact_text | string | AI-generated fun fact text |
+| fact_text | string | AI-edited fun fact text |
 | source_text_attribution | string | Attribution for the source description used as model input |
 | source_system | string | Source system for the input description |
 | generation_model | string | Model identifier used for generation |
@@ -300,7 +299,7 @@ All responses include a provenance block:
 
 AI-generated content is displayed in the species panel under a clearly labeled section. The label explicitly identifies the content as AI-generated. Generated content is visually distinguished from authoritative source content through consistent UI treatment — a distinct section header, a content type badge, and reduced visual prominence relative to authoritative fields.
 
-Fun facts are presented as supplementary educational content, not as primary species information. The species description sourced from EoL or IUCN is presented first and with greater visual weight.
+Fun facts are presented as supplementary educational content, not as primary species information. The species description sourced from EoL is presented first and with greater visual weight.
 
 ### 10.2 Provenance Requirements
 

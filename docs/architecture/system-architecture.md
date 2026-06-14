@@ -34,7 +34,7 @@ This document is intended for:
 
 VanishingRange is a free, open educational tool that visualizes the historical and current geographic range of IUCN threatened and extinct species. It is built to help K12 students understand biodiversity loss through explorable data, with a middle school reading level as its baseline audience.
 
-The system aggregates species range and observation data from authoritative public sources (IUCN, GBIF, Encyclopedia of Life, Catalogue of Life, and Protected Planet) and presents it as an interactive map visualization with supporting species information and AI-generated educational content.
+The system aggregates species range and observation data from authoritative public sources (GBIF, Encyclopedia of Life, Catalogue of Life, and Protected Planet) and presents it as an interactive map visualization with supporting species information and AI-generated educational content.
 
 ### 2.2 System Objectives
 
@@ -75,12 +75,10 @@ The system aggregates species range and observation data from authoritative publ
 
 | System | Type | Interaction |
 |--------|------|-------------|
-| IUCN Red List API | Data source | Species range polygons, conservation status |
 | GBIF API | Data source | Georeferenced species occurrence records |
 | Encyclopedia of Life API | Data source | Species descriptions and common names |
 | Catalogue of Life API | Data source | Taxonomy normalization |
 | Protected Planet API | Data source | Habitat and protected area geometry |
-| Ollama (local) | ML inference | AI-generated fun facts and plain language summaries |
 
 ### 3.3 Context Diagram
 
@@ -253,7 +251,7 @@ The system targets reasonable availability for a single-node educational tool wi
 
 Data integrity is maintained by:
 
-- Treating IUCN and GBIF as authoritative sources and not modifying their data
+- Treating GBIF provenance of authoritative sources and not modifying their data
 - Tracking provenance for all records through the pipeline
 - Distinguishing authoritative, derived, and generated content explicitly
 - Labeling interpolated range data as estimated rather than authoritative
@@ -320,8 +318,8 @@ Frontend performance is optimized through precomputed GeoJSON delivery. The API 
 
 ### 11.3 Known Limitations
 
-- IUCN Red List polygon coverage varies by species and taxonomic group. Not all in-scope species have complete historical range polygon coverage.
-- Species with sparse GBIF observation histories may have interpolated range polygons for years with insufficient data. Interpolated polygons are labeled as estimated.
+- Custom SDM will not use habitat threat, weather, disaster, or industrial information when determining habitat, rather instead relying on observation data and assumptions of local migration.
+- Species with sparse GBIF observation histories may be lacking in specific years and remote areas and may rely on pseudo-absense generation or interpolation to compute reasonable ranges.
 - A minimum observation threshold is applied. Years with fewer observations than the threshold default to the prior year's range rather than generating potentially misleading polygon artifacts.
 - The 90-day data recency exclusion means the most recent sighting locations are not reflected in the visualization.
 - Ollama with Mistral 7B running on CPU produces lower inference throughput than GPU-based deployment. This is acceptable for scheduled batch processing but means enrichment pipeline runs are slower than they would be on GPU hardware.

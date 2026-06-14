@@ -26,7 +26,6 @@ This document is intended for:
 - [ADR-003: Containerization and Deployment Orchestration Strategy](adr/ADR-003-Containerization.md)
 - [system-architecture.md](system-architecture.md)
 - [software-architecture.md](software-architecture.md)
-- [IUCN Red List API Documentation](https://api.iucnredlist.org)
 - [GBIF API Documentation](https://www.gbif.org/developer/summary)
 
 ---
@@ -47,22 +46,20 @@ The data architecture is designed to:
 
 ### 2.2 Data Architecture Principles
 
-**Authoritative sources first.** IUCN and GBIF data is treated as the ground truth for species range and conservation status. Derived and generated content supplements but does not override authoritative records.
+**Transparency** Every piece of content presented to users is attributed to its source. AI-generated content is explicitly labeled and distinguished from authoritative data.
 
-**Transparency by design.** Every piece of content presented to users is attributed to its source. AI-generated content is explicitly labeled and distinguished from authoritative data.
+**Performance** GeoJSON polygon outputs and enriched species content are computed during ETL processing and stored in the site schema, not generated at request time. This minimizes backend compute load and improves frontend responsiveness.
 
-**Precompute for performance.** GeoJSON polygon outputs and enriched species content are computed during ETL processing and stored in the site schema, not generated at request time. This minimizes backend compute load and improves frontend responsiveness.
+**Footprint.** The dataset scope is bounded to IUCN Red List threatened and extinct species. Least concern and near-threatened species are excluded to keep storage and processing requirements within single-node constraints.
 
-**Minimal footprint.** The dataset scope is bounded to IUCN Red List threatened and extinct species. Least concern and near-threatened species are excluded to keep storage and processing requirements within single-node constraints.
+**Data** No user data is collected or stored. No data beyond what is necessary for species visualization and education is ingested or retained.
 
-**Data minimization.** No user data is collected or stored. No data beyond what is necessary for species visualization and education is ingested or retained.
-
-**Protect sensitive location data.** Precise species sighting locations from the most recent 90 days are withheld from the frontend to reduce poaching and trafficking risk. Historical range data is displayed in full.
+**Ethics** Precise species sighting locations from the most recent 90 days are withheld from the frontend to reduce poaching and trafficking risk. Historical range data is displayed in full.
 
 ### 2.3 High-Level Data Flow
 
 ```
-External Sources (IUCN, GBIF, EoL, CoL, Protected Planet)
+External Sources (GBIF, EoL, CoL, Protected Planet)
         |
         v
 [EL Pipeline] --> Source Schema (raw ingested data + provenance)
@@ -85,7 +82,6 @@ External Sources (IUCN, GBIF, EoL, CoL, Protected Planet)
 
 | Source | Type | Primary Use |
 |--------|------|-------------|
-| IUCN Red List | Authoritative conservation authority | Species range polygons, conservation status, threat assessments |
 | GBIF | Observation aggregator | Georeferenced species occurrence records |
 | Encyclopedia of Life (EoL) | Taxonomy and species descriptions | Supplementary species descriptions and common names |
 | Catalogue of Life (CoL) | Taxonomy authority | Supplementary taxonomy normalization |
@@ -93,19 +89,15 @@ External Sources (IUCN, GBIF, EoL, CoL, Protected Planet)
 
 ### 3.2 Source Data Characteristics
 
-**IUCN Red List:** Provides authoritative range polygons and conservation status for assessed species. Coverage is strongest for threatened and extinct classifications. Data is structured and well-documented. Polygons represent expert-reviewed range assessments rather than raw observation density.
-
 **GBIF:** Provides georeferenced occurrence records aggregated from institutional collections, citizen science, and research datasets. Data quality varies by species and region. Temporal coverage spans from historical museum records to present-day observations. Structural inconsistencies exist across contributing datasets.
 
-**EoL and CoL:** Provide supplementary taxonomy and species description content. Used primarily to supplement IUCN descriptions for AI enrichment processing.
+**EoL and CoL:** Provide supplementary taxonomy and species description content. Used primarily to supplement GBIF descriptions for AI enrichment processing.
 
-**Protected Planet:** Provides habitat and protected area geometry. Used as supplementary range context where IUCN polygon coverage is limited.
+**Protected Planet:** Provides habitat and protected area geometry. Used as supplementary range context where GBIF observation coverage is limited.
 
 ### 3.3 Source Data Authority
 
-IUCN Red List is the primary authoritative source for conservation status and species range. All conservation status classifications presented to users are sourced directly from IUCN assessments. GBIF observation data is treated as supplementary evidence for range visualization, not as an override to IUCN range polygons.
-
-Where IUCN range polygons are unavailable for a given species-year combination, GBIF observation density is used as input to species distribution modeling and interpolation workflows. The provenance of all range data is tracked and surfaced to users.
+GBIF is the primary aggregator for species observation sources. Licensing for data provenance varies for each observation, and source attribution for generated range polygons is tracked and surfaced to users.
 
 ### 3.4 Source Data Refresh Cadence
 
@@ -113,7 +105,7 @@ The EL pipeline checks for updates from source APIs on a scheduled basis. The fo
 
 - If the target database schema is empty, a full load of all in-scope species is performed
 - If the target schema is populated, only records updated since the last successful run are retrieved and processed
-- IUCN reassessment cycles and GBIF occurrence updates trigger incremental updates to affected species records
+- GBIF occurrence updates trigger incremental updates to affected species records
 - The ML enrichment pipeline runs independently of the EL pipeline and processes only records flagged as updated since the last enrichment run
 
 ---
@@ -124,8 +116,6 @@ The EL pipeline checks for updates from source APIs on a scheduled basis. The fo
 
 Data sourced directly from external authoritative systems and presented to users with attribution. Includes:
 
-- IUCN species range polygons
-- IUCN conservation status and threat assessments
 - GBIF georeferenced occurrence records (subject to 90-day recency exclusion)
 - EoL and CoL taxonomy and species descriptions
 - Protected Planet habitat geometry
@@ -136,10 +126,12 @@ All public data is attributed to its source in the database and surfaced to user
 
 Data produced by VanishingRange processing pipelines from authoritative source inputs. Derived data does not exist in source systems and is the product of transformation logic applied to ingested records. Includes:
 
-- Precomputed annual GeoJSON polygon series per species
 - Normalized and deduplicated taxonomy records
-- Interpolated range polygons for years with insufficient observation density
+- Custom SDM-generated range polygons for years with sufficient observation density
+- Interpolated range polygons for years with insufficient observation density neighboring years with sufficient density
+- General notice for lack of data for years with insufficiant observation density neighboring years with similar lack of data 
 - Related species associations produced by semantic similarity modeling
+  - Most frequently common name collisions
 
 Derived data is labeled as derived in the provenance model and distinguished from authoritative source data in user-facing displays.
 
@@ -254,7 +246,7 @@ The provenance model tracks the following attributes per record:
 
 | Attribute | Description |
 |-----------|-------------|
-| source_system | Originating external system (IUCN, GBIF, EoL, CoL, Protected Planet) |
+| source_system | Originating external system (GBIF, EoL, CoL, Protected Planet) |
 | source_record_id | Identifier of the record in the originating system |
 | source_url | Direct URL to the originating record where available |
 | ingestion_date | Date the record was ingested into the source schema |
@@ -288,13 +280,11 @@ Provenance is surfaced to users in the following ways:
 
 ### 11.1 Authoritative Data
 
-Species range polygons, conservation status, and threat assessments sourced directly from IUCN are presented as authoritative. These records are produced by subject matter experts through peer-reviewed assessment processes. VanishingRange does not modify or reinterpret authoritative source content.
-
-Users are shown the IUCN source attribution and a direct link to the originating assessment record wherever authoritative data is displayed.
+[##ToDo]]
 
 ### 11.2 Derived Data
 
-Derived data (including interpolated range polygons, normalized taxonomy, and related species associations) is clearly distinguished from authoritative source data. Where interpolation has been applied to fill gaps in historical range data, users are shown a label indicating that the polygon is an estimate rather than a directly sourced record, along with the methodology used to produce it.
+Derived data (including range polygons and method of generation, normalized taxonomy, and related species associations) is clearly distinguished from authoritative source data. Where interpolation has been applied to fill gaps in historical range data, users are shown a label indicating that the polygon is an estimate rather than a directly sourced record, along with the methodology used to produce it.
 
 The goal of derivation is to produce the most accurate and useful visualization possible from available data, not to fabricate precision that does not exist in source records.
 
@@ -374,7 +364,7 @@ The dataset scope is bounded to IUCN Red List threatened and extinct species. Th
 
 - Least concern and near-threatened species would significantly expand dataset size beyond single-node infrastructure constraints
 - The conservation narrative is most urgent and educationally compelling for threatened and extinct species
-- These species are the primary focus of IUCN assessment efforts and have the strongest data coverage
+- These species are the primary focus of biodiversity assessment efforts and have the strongest data coverage
 - Existing public awareness and cultural conservation practices are generally stronger for common species, reducing the marginal educational value of including them
 
 The minimization boundary is documented as a deliberate scope decision rather than a technical limitation.
@@ -413,9 +403,8 @@ The minimization boundary is documented as a deliberate scope decision rather th
 
 The following assumptions underlie the data architecture:
 
-- IUCN and GBIF APIs remain publicly accessible and maintain backward-compatible data structures
-- IUCN Red List polygon coverage for threatened and extinct species is sufficient to serve as the primary range data source for the majority of in-scope species
-- GBIF observation density is sufficient to support meaningful range visualization for species where IUCN polygons are unavailable or incomplete
+- GBIF APIs remain publicly accessible and maintain backward-compatible data structures
+- GBIF observation density is sufficient to support meaningful range visualization
 - The 90-day recency exclusion provides meaningful protection against poaching and trafficking risk while preserving the educational value of the visualization
 - Ollama with Mistral 7B running on available CPU resources produces output of sufficient quality for K12 educational use after prompt engineering and audience suitability screening
 - Middle school reading level is an appropriate baseline for the target audience and serves both younger and older K12 students adequately
